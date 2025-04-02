@@ -9,6 +9,33 @@ use Illuminate\Http\Request;
 
 class InvitationController extends Controller
 {
+    /**
+     * @OA\Post(
+     *     path="/api/invitations/send",
+     *     summary="Send an invitation to a user",
+     *     tags={"Invitations"},
+     *     security={{"sanctum": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email", "role"},
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="role", type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Invitation sent successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Invitation sent successfully.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error sending the invitation"
+     *     )
+     * )
+     */
     public function send(Request $request)
     {
         $request->validate([

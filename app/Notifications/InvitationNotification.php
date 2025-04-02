@@ -26,8 +26,8 @@ class InvitationNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         $url = URL::temporarySignedRoute(
-            'register',
-            $this->invitation->expires_at,
+            'register.show',
+            now()->addHours(48),
             ['invitation' => $this->invitation->id]
         );
 

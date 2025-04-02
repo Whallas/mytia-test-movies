@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('password/forgot', [AuthController::class, 'forgotPassword'])->name('password.forgot');
-Route::post('register/{invitation}', [AuthController::class, 'register'])->middleware('signed')->name('register');
 Route::post('password/reset', [AuthController::class, 'resetPassword'])->name('password.reset');
 
 Route::middleware(['auth:sanctum', 'active.user'])->group(function () {
