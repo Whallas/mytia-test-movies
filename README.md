@@ -17,7 +17,7 @@ Ensure you have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/mytia-test-movies.git
+   git clone https://github.com/Whallas/mytia-test-movies.git
    cd mytia-test-movies
    ```
 
