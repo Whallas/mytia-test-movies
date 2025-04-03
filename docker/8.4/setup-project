@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+APP_ENV=${APP_ENV:-local}
+
+echo "Composer install"
+composer install \
+    --no-interaction \
+    --prefer-dist \
+    --optimize-autoloader \
+    --ignore-platform-reqs \
+    --ansi \
+    $(if [ "$APP_ENV" != "local" ]; then echo "--no-dev"; fi) \
+    || exit 1;
+
+if [ -z "$APP_KEY" ] && [ -f .env ] && APP_KEY=$(grep "^APP_KEY=.*" .env | cut -d '=' -f 2-) && [ -z "$APP_KEY" ];
+then
+    echo "Create App key"
+    php artisan key:generate --ansi --no-interaction || exit 1;
+fi
+
+# Run migrations
+echo "Run migrations"
+php artisan migrate --force --ansi --no-interaction || exit 1;
+
+echo "Run npm clean install"
+npm ci || exit 1;
+
+# Re-cache config and routes
+echo "Re-cache config and routes"
+php artisan optimize --ansi --no-interaction || exit 1;
+
+# Re-cache routes
+echo "Re-cache events"
+php artisan event:cache --ansi --no-interaction || exit 1;
+
+# Publish assets
+echo "Publish assets"
+php artisan vendor:publish --tag=laravel-assets --ansi --force --no-interaction || exit 1;
+
+# Restart horizon
+echo "Restart horizon"
+php artisan horizon:terminate --ansi --no-interaction || exit 1;
+
+echo "Publish api documentation"
+php artisan l5-swagger:generate --ansi --no-interaction;
