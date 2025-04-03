@@ -25,9 +25,10 @@ Ensure you have the following installed:
    ```bash
    cp .env.example .env
    ```
-   **Note:** Ensure you set the `OMDB_API_KEY` variable in the `.env` file with a valid API key from OMDB.
+   **Note:** 
+   - Ensure you set the `OMDB_API_KEY` variable in the `.env` file with a valid API key from OMDB.
+   - If port 80 is unavailable on your system, you can change the `APP_PORT` variable in the `.env` file to a different port (e.g., `8080`).
 <br><br>
-
 3. Build and start the Docker containers:
    ```bash
    docker-compose up --build
@@ -51,8 +52,19 @@ Ensure you have the following installed:
    ```bash
    docker exec -it -u sail mytia-test-movies-app php artisan movies:sync-omdb
    ```
-
+    - Valuable logs are shown in the `storage/logs` directory. You can check these files to monitor the command's behavior.
+<br><br>
 7. Access the application at [http://localhost](http://localhost).
+
+### Viewing Emails with Mailpit
+
+The application uses [Mailpit](https://github.com/axllent/mailpit) for local email testing. To view the invitation email:
+
+1. Ensure the Docker containers are running.
+2. Open your browser and navigate to [http://localhost:8025](http://localhost:8025).
+3. Locate the invitation email in the Mailpit interface.
+
+You can click the email to view its content, including the invitation link.
 
 ## Architecture Overview
 
